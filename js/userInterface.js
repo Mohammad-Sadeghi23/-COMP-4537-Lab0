@@ -16,13 +16,14 @@ export class UserInterface {
 
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
-
-
+        
         for (let i = 0; i < container.children.length; i++) {
             container.children[i].style.position = "absolute";
             container.children[i].style.left = Math.floor(Math.random() * (viewportWidth - container.children[i].offsetWidth)) + "px";
             container.children[i].style.top = Math.floor(Math.random() * (viewportHeight - container.children[i].offsetHeight)) + "px";
         }
+
+
     }
     
     // enable all buttons

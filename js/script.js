@@ -6,11 +6,9 @@ const button = new Button();
 
 export class Script {
   constructor() {
-
     // Add event listener to the button
     this.button = document.getElementById("submitButton");
     this.button.addEventListener("click", Script.startGame);
-
   }
 
   // Static method to start the game
@@ -38,11 +36,18 @@ export class Script {
 
     const container = Button.placeButtonsInRow(buttons);
 
-    // Add event listener to the button
-    this.buttona = document.getElementById("a");
-    this.buttona.addEventListener("click", () => UserInterface.scrambleUIButtons(container));
+    async function callNTimes(method, n) {
+      for (let i = 0; i < n; i++) {
+        method();
+        await UserInterface.wait(2000); // 2 seconds
+      }
+    }
 
-
+    // Scramble buttons n (number of buttons) times with 2 seconds interval
+    callNTimes(
+      () => UserInterface.scrambleUIButtons(container),
+      numberOfButtons
+    );
   }
 }
 
