@@ -1,53 +1,66 @@
 import { UserInterface } from "./userInterface.js";
 import { Button } from "./button.js";
+import { STRINGS } from "../lang/messages/en/strings.js";
 
-const ui = new UserInterface();
-const button = new Button();
+new UserInterface();
 
 export class Script {
+
   constructor() {
     // Add event listener to the button
-    this.button = document.getElementById("submitButton");
-    this.button.addEventListener("click", Script.startGame);
+    this.submitBtn = document.getElementById("submitButton");
+    this.submitBtn.addEventListener("click", () => this.startGame());
   }
 
   // Static method to start the game
-  static startGame() {
-    console.log("Game Started");
+  async startGame() {
 
-    let buttons = [];
+    // Clear previous messages
+    const msg = document.getElementById("msg");
+    msg.innerText = "";
 
-    const numberOfButtons = parseInt(
-      document.getElementById("numberInput").value
-    );
+    const n = Number(document.getElementById("numberInput").value);
 
-    // check if the buttonContainer exists, if so remove it
-    const existingContainer = document.getElementById("buttonContainer");
-
-    if (existingContainer) {
-      existingContainer.remove();
-      console.log("Existing buttons removed");
+    // Validate input
+    if (Number.isNaN(n)) {
+      msg.innerText = STRINGS.ERROR_NOT_NUMBER;
+      return;
+    }
+    if (n < 3 || n > 7) {
+      msg.innerText = STRINGS.ERROR_RANGE;
+      return;
     }
 
-    for (let i = 1; i <= numberOfButtons; i++) {
-      const button = Button.createButton(i);
-      buttons.push(button);
+    const width = "10em";
+    const height = "5em";
+
+    // Create buttons
+    const buttons = [];
+    for (let i = 1; i <= n; i++) {
+      const color = Button.randomRgb();
+      buttons.push(new Button(i, color, width, height));
     }
 
-    const container = Button.placeButtonsInRow(buttons);
+    // Mount buttons to UI
+    const container = UserInterface.mountButtons(buttons);
 
-    async function callNTimes(method, n) {
-      for (let i = 0; i < n; i++) {
-        method();
-        await UserInterface.wait(2000); // 2 seconds
-      }
+    // Not clickable until scrambling finishes
+    UserInterface.disableButtons(container);
+
+    // Pause n seconds
+    await UserInterface.wait(n * 1000);
+
+    // Scramble n times, 2 seconds apart
+    for (let i = 0; i < n; i++) {
+      UserInterface.scrambleUIButtons(container);
+      await UserInterface.wait(2000);
     }
 
-    // Scramble buttons n (number of buttons) times with 2 seconds interval
-    callNTimes(
-      () => UserInterface.scrambleUIButtons(container),
-      numberOfButtons
-    );
+    // Hide numbers, enable clicking
+    UserInterface.hideNumbers(container);
+    UserInterface.enableButtons(container);
+
+    // (Next step) add memory checking here
   }
 }
 

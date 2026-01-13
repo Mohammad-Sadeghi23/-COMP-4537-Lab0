@@ -1,37 +1,40 @@
-export class Button{
+export class Button {
+  constructor(id, color, width, height) {
+    this.id = id;
+    this.color = color;
+    this.width = width;
+    this.height = height;
 
-    constructor(){
-    }
+    // DOM element created here
+    this.el = document.createElement("button");
+    this.el.id = `btn-${id}`;
+    this.el.dataset.order = String(id);
+    this.el.innerText = String(id);
+    this.el.disabled = true;
 
-    // create a button with a random color
-    static createButton(id){
-        const btn = document.createElement("button");
-        btn.id = `btn-${id}`;
-        btn.innerText = `${id}`;
-        btn.disabled = true;
-        btn.style.width = "10em";
-        btn.style.height = "5em";
-        btn.style.margin = "0.2em";
-        btn.style.backgroundColor = `rgb(${this.getRandomColor()}, ${this.getRandomColor()}, ${this.getRandomColor()})`;
+    // Apply styles from constructor values
+    this.el.style.width = width;
+    this.el.style.height = height;
+    this.el.style.margin = "0.2em";
+    this.el.style.backgroundColor = color;
+  }
 
-        return btn;
-    }
+  // methods to manipulate button state
+  disable() { this.el.disabled = true; }
+  enable() { this.el.disabled = false; }
 
-    // place buttons next to each other in same row
-    static placeButtonsInRow(buttons){
-        const container = document.createElement("div");
-        container.id = "buttonContainer";
-        buttons.forEach(button => {
-            container.appendChild(button);
-        }
-        );
-        document.body.appendChild(container);
+  // methods to manipulate button display
+  hideNumber() { this.el.innerText = ""; }
+  showNumber() { this.el.innerText = String(this.id); }
 
-        return container;
-    }
+  static getRandomColorValue() {
+    return Math.floor(Math.random() * 256);
+  }
 
-    // Static method to get a random color value
-    static getRandomColor(){
-        return Math.floor(Math.random() * 255)
-    }
+  static randomRgb() {
+    const r = this.getRandomColorValue();
+    const g = this.getRandomColorValue();
+    const b = this.getRandomColorValue();
+    return `rgb(${r}, ${g}, ${b})`;
+  }
 }
