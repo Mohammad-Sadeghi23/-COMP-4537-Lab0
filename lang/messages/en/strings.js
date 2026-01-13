@@ -6,6 +6,4 @@ export const STRINGS = {
     ERROR_NOT_NUMBER: "Please enter a valid number.",
     MSG_EXCELLENT: "Excellent memory!",
     MSG_WRONG: "Wrong order!",
-    MSG_WIN: "Excellent Memory!",
-    
 };

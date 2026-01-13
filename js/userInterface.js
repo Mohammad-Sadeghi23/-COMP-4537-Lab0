@@ -2,13 +2,17 @@ import { STRINGS } from "../lang/messages/en/strings.js";
 
 export class UserInterface {
     constructor() {
-
         document.title = STRINGS.TITLE;
         document.getElementById("numberLabel").innerText = STRINGS.BUTTON_LABEL;
         document.getElementById("submitButton").innerText = STRINGS.BTN_START;
     }
 
-    // scramble the buttons on the UI
+    // set message on the UI
+    setMessage(text) {
+        document.getElementById("msg").innerText = text;
+    }
+
+    // creates and mounts buttons to the DOM
     static mountButtons(buttonObjs) {
 
         // check if the buttonContainer exists, if so remove it
@@ -30,6 +34,7 @@ export class UserInterface {
         return container;
     }
 
+    // randomly position buttons within the viewport
     static scrambleUIButtons(container) {
 
         // get viewport dimensions
